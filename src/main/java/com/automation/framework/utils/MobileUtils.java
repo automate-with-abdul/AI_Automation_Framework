@@ -18,11 +18,11 @@ public class MobileUtils {
     }
 
     public static void swipeVertical(AppiumDriver driver, int startY, int endY) {
-        driver.executeScript("mobile: swipe", Map.of(
-            "startY", startY,
-            "endY", endY,
-            "duration", 0.5
-        ));
+        new org.openqa.selenium.interactions.PointerInput(org.openqa.selenium.interactions.PointerInput.Kind.TOUCH, "finger")
+            .createPointerMove(Duration.ofMillis(0), org.openqa.selenium.interactions.PointerInput.Origin.viewport(), startY, 0)
+            .createPointerDown(org.openqa.selenium.interactions.PointerInput.MouseButton.LEFT.asArg())
+            .createPointerMove(Duration.ofMillis(500), org.openqa.selenium.interactions.PointerInput.Origin.viewport(), endY, 0)
+            .createPointerUp(org.openqa.selenium.interactions.PointerInput.MouseButton.LEFT.asArg());
     }
 
     private static WebElement waitForElementVisible(AppiumDriver driver, WebElement element) {

@@ -14,7 +14,7 @@ public class ExcelUtils {
 
     public static Map<String, String> readTestData(String fileName, String sheetName, int rowNum) {
         Map<String, String> dataMap = new LinkedHashMap<>();
-        try (Workbook workbook = WorkbookFactory.create(new File(TEST_DATA_PATH + fileName))) {
+        try (Workbook workbook = WorkbookFactory.create(new File(Constants.TEST_DATA_DIR + fileName))) {
             Sheet sheet = workbook.getSheet(sheetName);
             Row headerRow = sheet.getRow(0);
             Row dataRow = sheet.getRow(rowNum);

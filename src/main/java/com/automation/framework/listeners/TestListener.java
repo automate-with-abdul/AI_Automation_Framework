@@ -1,5 +1,6 @@
 package com.automation.framework.listeners;
 
+import com.automation.framework.drivermanager.DriverFactory;
 import com.automation.framework.frameworkengine.SendMail;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
@@ -25,7 +26,7 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         logMessage("FAILED TEST: " + result.getName());
-        captureScreenshot((WebDriver) result.getTestContext().getAttribute("driver"));
+        captureScreenshot(DriverFactory.getWebDriver());
         SendMail.sendReportEmail();
     }
 

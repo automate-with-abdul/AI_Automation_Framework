@@ -37,7 +37,7 @@ public class SendMail {
             textPart.setText("Please find attached the test execution report.");
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
-            attachmentPart.attachFile("allure-report.zip");
+            attachmentPart.attachFile("allure-results.zip");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(textPart);

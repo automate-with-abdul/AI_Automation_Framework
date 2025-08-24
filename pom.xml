@@ -25,6 +25,7 @@
         <slf4j.version>2.0.13</slf4j.version>
         <poi.version>5.2.5</poi.version>
         <commons-io.version>2.16.1</commons-io.version>
+        <aspectj.version>1.9.22</aspectj.version>
         <healenium.version>3.4.8</healenium.version>
         <opencsv.version>5.9</opencsv.version>
         <pdfbox.version>3.0.2</pdfbox.version>
@@ -146,6 +147,13 @@
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>${pdfbox.version}</version>
+        </dependency>
+
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
 
         <!-- Java Mail -->

@@ -30,7 +30,8 @@ public class SelfHealingUtils {
         for (By locator : locators) {
             try {
                 WebElement element = driver.findElement(locator);
-                System.out.println("Used fallback locator: " + locator);
+                org.apache.logging.log4j.LogManager.getLogger(SelfHealingUtils.class)
+                    .info("Used fallback locator: {}", locator);
                 return element;
             } catch (Exception e) {
                 // Continue to next locator
@@ -48,7 +49,8 @@ public class SelfHealingUtils {
     public static WebElement healLocator(WebDriver driver, By originalLocator) {
         // Implementation would integrate with Healenium API here
         // This is a simplified example
-        System.out.println("Attempting locator healing for: " + originalLocator);
+        org.apache.logging.log4j.LogManager.getLogger(SelfHealingUtils.class)
+            .warn("Attempting locator healing for: {}", originalLocator);
         // Add AI-based healing logic here
         throw new RuntimeException("Locator healing failed for: " + originalLocator);
     }
