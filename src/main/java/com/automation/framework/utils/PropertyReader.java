@@ -3,17 +3,21 @@ package com.automation.framework.utils;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Utility class for reading properties files
+ */
 public class PropertyReader {
     private static final Properties properties = new Properties();
 
-    static {
-        try (InputStream input = PropertyReader.class.getClassLoader().getResourceAsStream("config.properties")) {
+    public static Properties loadProperties(String fileName) {
+        try (InputStream input = PropertyReader.class.getClassLoader().getResourceAsStream(fileName)) {
             if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
+                throw new RuntimeException("Unable to find " + fileName);
             }
             properties.load(input);
+            return properties;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error reading properties file", e);
         }
     }
 
