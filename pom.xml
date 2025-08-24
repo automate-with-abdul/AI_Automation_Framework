@@ -26,6 +26,9 @@
         <poi.version>5.2.5</poi.version>
         <commons-io.version>2.16.1</commons-io.version>
         <healenium.version>3.4.8</healenium.version>
+        <opencsv.version>5.9</opencsv.version>
+        <pdfbox.version>3.0.2</pdfbox.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
     </properties>
 
     <dependencies>
@@ -129,6 +132,27 @@
             <groupId>com.epam.healenium</groupId>
             <artifactId>healenium-web</artifactId>
             <version>${healenium.version}</version>
+        </dependency>
+
+        <!-- CSV -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
+
+        <!-- PDF -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <!-- Java Mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail.version}</version>
         </dependency>
     </dependencies>
 

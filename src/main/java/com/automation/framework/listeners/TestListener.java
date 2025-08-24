@@ -1,22 +1,41 @@
 package com.automation.framework.listeners;
 
+import com.automation.framework.frameworkengine.SendMail;
+import io.qameta.allure.Attachment;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class TestListener implements ITestListener {
-    
+    private static final String LINE = "\n----------------------------------------\n";
+
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println("Starting test: " + result.getName());
+        logMessage("STARTING TEST: " + result.getName());
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println("Test passed: " + result.getName());
+        logMessage("PASSED TEST: " + result.getName());
+        SendMail.sendReportEmail();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("Test failed: " + result.getName());
+        logMessage("FAILED TEST: " + result.getName());
+        captureScreenshot((WebDriver) result.getTestContext().getAttribute("driver"));
+        SendMail.sendReportEmail();
+    }
+
+    @Attachment(value = "Screenshot", type = "image/png")
+    private byte[] captureScreenshot(WebDriver driver) {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @Attachment
+    private String logMessage(String message) {
+        return LINE + message + LINE;
     }
 }
