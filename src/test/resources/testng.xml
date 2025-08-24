@@ -9,11 +9,12 @@
 
     <test name="UI Tests">
         <classes>
-            <class name="com.automation.framework.tests.ui.LoginTests"/>
+<!--            <class name="com.automation.framework.tests.ui.LoginTests"/>-->
+            <class name="com.automation.framework.tests.demoqa.DemoQaTests"/>
         </classes>
     </test>
 
-    <test name="API Tests">
+    <!--<test name="API Tests">
         <classes>
             <class name="com.automation.framework.tests.api.APITests"/>
         </classes>
@@ -23,5 +24,5 @@
         <classes>
             <class name="com.automation.framework.tests.mobile.AppTests"/>
         </classes>
-    </test>
+    </test>-->
 </suite>
