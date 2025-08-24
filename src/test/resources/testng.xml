@@ -3,7 +3,6 @@
 <suite name="Automation Suite" parallel="classes" thread-count="3">
     <listeners>
         <listener class-name="com.automation.framework.listeners.TestListener"/>
-        <listener class-name="com.automation.framework.listeners.RetryAnalyzer"/>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 

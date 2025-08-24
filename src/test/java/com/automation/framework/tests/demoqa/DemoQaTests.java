@@ -10,7 +10,7 @@ import static org.testng.Assert.*;
 
 public class DemoQaTests {
     
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void testElementsPageTextBox() {
         ElementsPage elementsPage = new DemoQaHomePage()
                 .navigateToHomePage()
