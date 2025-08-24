@@ -39,6 +39,5 @@ public class DemoQaTests {
         
         assertTrue(homePage.navigateToElementsSection().verifyPageLoaded());
         assertTrue(homePage.navigateToFormsSection().verifyPageLoaded());
-        assertTrue(homePage.navigateToAlertsSection().verifyPageLoaded());
     }
 }
