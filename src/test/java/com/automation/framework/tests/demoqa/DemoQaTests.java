@@ -37,7 +37,12 @@ public class DemoQaTests {
     public void testPageNavigation() {
         DemoQaHomePage homePage = new DemoQaHomePage().navigateToHomePage();
         
-        assertTrue(homePage.navigateToElementsSection().verifyPageLoaded());
-        assertTrue(homePage.navigateToFormsSection().verifyPageLoaded());
+        // Verify Elements page loaded with page identifier and timeout
+        assertTrue(homePage.navigateToElementsSection()
+            .verifyPageLoaded(By.xpath("//div[@class='main-header' and text()='Elements']"), Constants.DEFAULT_TIMEOUT));
+        
+        // Verify Forms page loaded
+        assertTrue(homePage.navigateToFormsSection()
+            .verifyPageLoaded(By.xpath("//div[@class='main-header' and text()='Forms']"), Constants.DEFAULT_TIMEOUT));
     }
 }
