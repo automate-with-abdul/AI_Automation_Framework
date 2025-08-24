@@ -48,7 +48,7 @@
             <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
