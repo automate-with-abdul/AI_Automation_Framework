@@ -1,6 +1,10 @@
 package com.automation.framework.utils;
 
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
+import java.time.Duration;
+import java.util.Collections;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,11 +22,25 @@ public class MobileUtils {
     }
 
     public static void swipeVertical(AppiumDriver driver, int startY, int endY) {
-        new org.openqa.selenium.interactions.PointerInput(org.openqa.selenium.interactions.PointerInput.Kind.TOUCH, "finger")
-            .createPointerMove(Duration.ofMillis(0), org.openqa.selenium.interactions.PointerInput.Origin.viewport(), startY, 0)
-            .createPointerDown(org.openqa.selenium.interactions.PointerInput.MouseButton.LEFT.asArg())
-            .createPointerMove(Duration.ofMillis(500), org.openqa.selenium.interactions.PointerInput.Origin.viewport(), endY, 0)
-            .createPointerUp(org.openqa.selenium.interactions.PointerInput.MouseButton.LEFT.asArg());
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 0);
+        
+        // Move to starting position
+        swipe.addAction(finger.createPointerMove(Duration.ZERO, 
+            PointerInput.Origin.viewport(), 0, startY));
+        
+        // Press down
+        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        
+        // Move to end position
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(500),
+            PointerInput.Origin.viewport(), 0, endY));
+            
+        // Release
+        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        
+        // Perform the sequence
+        driver.perform(Collections.singletonList(swipe));
     }
 
     private static WebElement waitForElementVisible(AppiumDriver driver, WebElement element) {
