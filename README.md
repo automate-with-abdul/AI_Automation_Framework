@@ -151,5 +151,5 @@ aider --model ollama/llama3.1 .
 ## Contact
 - **Author**: Abdul Mateen Maniyar
 - **Email**: maniyar.abdulm@gmail.com  
-- **LinkedIn**: https://www.linkedin.com/in/abdul-mateen-maniyar/
+- **LinkedIn**: [linkedin.com/in/yourprofile](https://www.linkedin.com/in/abdul-mateen-maniyar/)
 
