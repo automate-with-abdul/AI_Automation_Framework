@@ -25,6 +25,8 @@ public class TestListener implements ITestListener {
         if (PropertyReader.getProperty("send.email").equalsIgnoreCase("true")) {
             SendMail.sendReportEmail();
         }
+        // Ensure driver cleanup
+        DriverFactory.quitDriver();
     }
 
     @Override
