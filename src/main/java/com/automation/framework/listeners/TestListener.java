@@ -2,6 +2,7 @@ package com.automation.framework.listeners;
 
 import com.automation.framework.drivermanager.DriverFactory;
 import com.automation.framework.frameworkengine.SendMail;
+import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
