@@ -2,6 +2,7 @@ package com.automation.framework.listeners;
 
 import com.automation.framework.drivermanager.DriverFactory;
 import com.automation.framework.frameworkengine.SendMail;
+import com.automation.framework.utils.PropertyReader;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
@@ -21,7 +22,9 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         logMessage("PASSED TEST: " + result.getName());
-        SendMail.sendReportEmail();
+        if (PropertyReader.getProperty("send.email").equalsIgnoreCase("true")) {
+            SendMail.sendReportEmail();
+        }
     }
 
     @Override
@@ -38,7 +41,9 @@ public class TestListener implements ITestListener {
             captureScreenshot(mobileDriver);
         }
         
-        // SendMail.sendReportEmail();  // Temporarily disabled for debugging
+        if (PropertyReader.getProperty("send.email").equalsIgnoreCase("true")) {
+            SendMail.sendReportEmail();
+        }
     }
 
     @Attachment(value = "Screenshot", type = "image/png")
