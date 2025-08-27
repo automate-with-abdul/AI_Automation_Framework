@@ -1,6 +1,7 @@
 package com.automation.framework.frameworkengine;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,6 +16,7 @@ public class PageActionUtils {
     
     public static void click(WebDriver driver, By locator) {
         WebElement element = waitForElementVisible(driver, locator);
+        scrollToElement(driver, element);
         element.click();
     }
 
@@ -32,4 +34,10 @@ public class PageActionUtils {
         return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
                 .until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+
+    public static void scrollToElement(WebDriver driver, WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true); window.scrollBy(0, -150);", element);
+    }
+
 }

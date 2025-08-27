@@ -28,7 +28,7 @@ public class WaitForPage {
 
     public void waitForPageLoadComplete() {
         wait.until(driver -> {
-            String state = ((JavascriptExecutor) driver).executeScript("return document.readyState");
+            String state = ((JavascriptExecutor) driver).executeScript("return document.readyState").toString();
             return state.equals("complete");
         });
     }

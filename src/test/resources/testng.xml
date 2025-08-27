@@ -3,7 +3,6 @@
 <suite name="Automation Suite" parallel="classes" thread-count="5" configfailurepolicy="continue" time-out="1800000">
     <listeners>
         <listener class-name="com.automation.framework.listeners.TestListener"/>
-        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
     <test name="UI Tests">

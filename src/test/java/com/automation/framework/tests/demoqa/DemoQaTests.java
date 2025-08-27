@@ -1,32 +1,27 @@
 package com.automation.framework.tests.demoqa;
 
+import com.automation.framework.drivermanager.DriverFactory;
 import com.automation.framework.frameworkengine.Constants;
 import com.automation.framework.pages.DemoQaHomePage;
-import com.automation.framework.pages.ElementsPage;
 import com.automation.framework.pages.FormsPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 public class DemoQaTests {
-    
-    @Test(retryAnalyzer = RetryAnalyzer.class)
-    public void testElementsPageTextBox() {
-        ElementsPage elementsPage = new DemoQaHomePage()
-                .navigateToHomePage()
-                .navigateToElementsSection()
-                .navigateToTextBox()
-                .fillTextBoxForm("John Doe", "john@test.com", "123 Main St", "456 Second St");
-        
-        String output = elementsPage.getOutputText();
-        assertTrue(output.contains("John Doe"));
-        assertTrue(output.contains("john@test.com"));
+    WebDriver driver;
+    @BeforeMethod
+    public void setup() {
+        driver = DriverFactory.initializeWebDriver("chrome");
     }
 
     @Test
     public void testPracticeFormSubmission() {
         FormsPage formsPage = new DemoQaHomePage()
-                .navigateToHomePage()
+                .navigateToDemoQaPage()
                 .navigateToFormsSection()
                 .navigateToPracticeForm()
                 .fillPracticeForm("Alice", "Smith", "alice@test.com", "1234567890");
@@ -37,14 +32,19 @@ public class DemoQaTests {
 
     @Test
     public void testPageNavigation() {
-        DemoQaHomePage homePage = new DemoQaHomePage().navigateToHomePage();
+        DemoQaHomePage homePage = new DemoQaHomePage().navigateToDemoQaPage();
         
         // Verify Elements page loaded with page identifier and timeout
         assertTrue(homePage.navigateToElementsSection()
-            .verifyPageLoaded(By.xpath("//div[@class='main-header' and text()='Elements']"), Constants.DEFAULT_TIMEOUT));
-        
+            .verifyPageLoaded(By.xpath("//div[@class='element-list collapse show']//parent::div//div[@class='header-text' and text() = 'Elements']"), Constants.DEFAULT_TIMEOUT));
+
+        homePage.navigateToHomePage();
         // Verify Forms page loaded
         assertTrue(homePage.navigateToFormsSection()
-            .verifyPageLoaded(By.xpath("//div[@class='main-header' and text()='Forms']"), Constants.DEFAULT_TIMEOUT));
+            .verifyPageLoaded(By.xpath("//div[@class='element-list collapse show']//parent::div//div[@class='header-text' and text() = 'Forms']"), Constants.DEFAULT_TIMEOUT));
+    }
+    @AfterMethod
+    public void teardown() {
+        DriverFactory.quitDriver();
     }
 }

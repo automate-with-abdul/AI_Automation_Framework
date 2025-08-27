@@ -2,59 +2,90 @@ package com.automation.framework.listeners;
 
 import com.automation.framework.drivermanager.DriverFactory;
 import com.automation.framework.frameworkengine.SendMail;
+import com.automation.framework.reporting.HtmlReporter;
 import com.automation.framework.utils.PropertyReader;
 import io.appium.java_client.AppiumDriver;
-import io.qameta.allure.Attachment;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TestListener implements ITestListener {
-    private static final String LINE = "\n----------------------------------------\n";
 
     @Override
     public void onTestStart(ITestResult result) {
-        logMessage("STARTING TEST: " + result.getName());
+        Reporter.log("STARTING TEST: " + result.getName(), true);
+        HtmlReporter.logTestStart(result);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        logMessage("PASSED TEST: " + result.getName());
-        if (PropertyReader.getProperty("send.email").equalsIgnoreCase("true")) {
-            SendMail.sendReportEmail();
-        }
-        // Ensure driver cleanup
-        DriverFactory.quitDriver();
+        Reporter.log("PASSED TEST: " + result.getName(), true);
+        HtmlReporter.logTestSuccess(result);
+        cleanupDriver();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        logMessage("FAILED TEST: " + result.getName());
-        
-        // Capture screenshot for both Web and Mobile drivers
+        Reporter.log("FAILED TEST: " + result.getName(), true);
+
         WebDriver webDriver = DriverFactory.getWebDriver();
         AppiumDriver mobileDriver = DriverFactory.getMobileDriver();
-        
+
+        String screenshotPath = null;
         if (webDriver != null) {
-            captureScreenshot(webDriver);
+            screenshotPath = captureScreenshot(webDriver, result.getName());
         } else if (mobileDriver != null) {
-            captureScreenshot(mobileDriver);
+            screenshotPath = captureScreenshot(mobileDriver, result.getName());
         }
-        
-        if (PropertyReader.getProperty("send.email").equalsIgnoreCase("true")) {
+
+        HtmlReporter.logTestFailure(result, screenshotPath);
+        cleanupDriver();
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        Reporter.log("SKIPPED TEST: " + result.getName(), true);
+        cleanupDriver();
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        HtmlReporter.finalizeReport();
+
+        if ("true".equalsIgnoreCase(PropertyReader.getProperty("send.email"))) {
             SendMail.sendReportEmail();
         }
     }
 
-    @Attachment(value = "Screenshot", type = "image/png")
-    private byte[] captureScreenshot(WebDriver driver) {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    private void cleanupDriver() {
+        DriverFactory.quitDriver();
     }
 
-    @Attachment
-    private String logMessage(String message) {
-        return LINE + message + LINE;
+    private String captureScreenshot(WebDriver driver, String testName) {
+        try {
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String screenshotDir = "target/custom-report/screenshots";
+            File dir = new File(screenshotDir);
+            if (!dir.exists()) dir.mkdirs();
+
+            String screenshotPath = screenshotDir + "/" + testName + "_" + timestamp + ".png";
+            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(srcFile, new File(screenshotPath));
+            Reporter.log("Screenshot saved: " + screenshotPath, true);
+            return "screenshots/" + testName + "_" + timestamp + ".png"; // relative path for HTML
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
