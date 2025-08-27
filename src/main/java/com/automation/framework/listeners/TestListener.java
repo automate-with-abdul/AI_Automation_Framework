@@ -26,8 +26,18 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         logMessage("FAILED TEST: " + result.getName());
-        captureScreenshot(DriverFactory.getWebDriver());
-        SendMail.sendReportEmail();
+        
+        // Capture screenshot for both Web and Mobile drivers
+        WebDriver webDriver = DriverFactory.getWebDriver();
+        AppiumDriver mobileDriver = DriverFactory.getMobileDriver();
+        
+        if (webDriver != null) {
+            captureScreenshot(webDriver);
+        } else if (mobileDriver != null) {
+            captureScreenshot(mobileDriver);
+        }
+        
+        // SendMail.sendReportEmail();  // Temporarily disabled for debugging
     }
 
     @Attachment(value = "Screenshot", type = "image/png")
